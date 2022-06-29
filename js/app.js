@@ -23,6 +23,11 @@
  * 
 */
 
+const CLASSACTIVE = "menu__linK"
+const CLASSMENULINK = "your-active-class"
+const sectionIdMap = {}
+const main = document.querySelector("main")
+const navbarList = document.getElementById("navbar__list")
 
 /**
  * End Global Variables
@@ -31,6 +36,39 @@
 */
 
 
+/**
+ * @description Get all section with data-nav attribute element from document
+ * @returns {Array} sectionns
+ */
+function getSectionsWithDataNav() {
+    return document.querySelectorAll('section')
+}
+
+function getSections() {
+    return getSectionsWithDataNav()
+}
+
+/**
+ * @description Add section to Id-Section Map
+ * @param {HTMLElement} section 
+ */
+function setupSection(section) {
+    sectionIdMap[section.id] = section
+}
+
+/**
+ * @description Create new li element with text from section data-nav and 
+ * id from section Id
+ * @param {HTMLElement} section 
+ * @returns {HTMLElement}
+ */
+function createNavLink(section) {
+    const li = document.createElement("li")
+    li.innerText = section.attributes["data-nav"].value
+    li.setAttribute("id", `for-${section.id}`)
+    li.classList.add(CLASSMENULINK)
+    return li
+}
 
 /**
  * End Helper Functions
@@ -40,12 +78,32 @@
 
 // build the nav
 
+/**
+ * @description create and setup the nav bar from sections 
+ * on the page
+ */
+function buildNav() {
+    const listSection = getSectionsWithDataNav()
+    const fragment = document.createDocumentFragment()
+    //for every sections create a new li and add it to fragment
+    for(let section of listSection) {
+        setupSection(section)
+        li = createNavLink(section)
+        fragment.appendChild(li)
+    }
+    navbarList.appendChild(fragment)
+}
 
 // Add class 'active' to section when near top of viewport
 
 
 // Scroll to anchor ID using scrollTO event
 
+function start() {
+    buildNav()
+}
+
+start()
 
 /**
  * End Main Functions
