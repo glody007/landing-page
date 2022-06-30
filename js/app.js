@@ -28,8 +28,6 @@ const MENULINKCLASS = "menu__linK"
 const SECTIONACTIVECLASS = "your-active-class"
 const sectionIdMap = {}
 let sectionActive = null;
-const main = document.querySelector("main")
-const navbarList = document.getElementById("navbar__list")
 
 /**
  * End Global Variables
@@ -126,7 +124,7 @@ function buildNav() {
         li = createNavLink(section)
         fragment.appendChild(li)
     }
-    navbarList.appendChild(fragment)
+    document.getElementById("navbar__list").appendChild(fragment)
 }
 
 
