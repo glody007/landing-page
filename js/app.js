@@ -23,7 +23,8 @@
  * 
 */
 
-const MENUACTIVECLASS = "menu__linK"
+const MENUACTIVECLASS = "active"
+const MENULINKCLASS = "menu__linK"
 const SECTIONACTIVECLASS = "your-active-class"
 const sectionIdMap = {}
 let sectionActive = null;
@@ -70,9 +71,40 @@ function setupSection(section) {
 function createNavLink(section) {
     const li = document.createElement("li")
     li.innerText = section.attributes["data-nav"].value
-    li.setAttribute("id", `for-${section.id}`)
-    li.classList.add(SECTIONACTIVECLASS)
+    li.setAttribute("id", getLinkIdFromSectionId(section.id))
+    li.classList.add(MENULINKCLASS)
     return li
+}
+
+/**
+ * @description Get section id from nav id
+ * @param {string} id 
+ * @returns 
+ */
+function getSectionIdFromLinkId(id) {
+    return id.split("-")[1]
+}
+
+/**
+ * @description Get section id from nav id
+ * @param {string} id 
+ * @returns 
+ */
+function getLinkIdFromSectionId(id) {
+    return `for-${id}`
+}
+
+/**
+ * @description Add class 'active' new active link
+ * remove active from old active link
+ * @param {string} newId id of the new active section
+ * @param {string} oldId id of the old active section
+ */
+function setActiveLink(newId, oldId) {
+    const oldLinkId = getLinkIdFromSectionId(oldId)
+    const newLinkId = getLinkIdFromSectionId(newId)
+    document.getElementById(oldLinkId).classList.remove(MENUACTIVECLASS)
+    document.getElementById(newLinkId).classList.add(MENUACTIVECLASS)
 }
 
 /**
@@ -99,13 +131,14 @@ function buildNav() {
 
 
 /**
- * Add class 'active' to section when near top of viewport
+ * @description Add class 'active' to section when near top of viewport
  * @param {string} id of the section 
  */
 function setActiveSection(id) {
     const section = sectionIdMap[id]
     //Add class 'active' to section only if it is not already active
     if(sectionActive !== section) {
+        setActiveLink(section.id, sectionActive.id)
         sectionIdMap[id].classList.toggle(SECTIONACTIVECLASS)
         sectionActive.classList.toggle(SECTIONACTIVECLASS)
         sectionActive = section
@@ -113,7 +146,7 @@ function setActiveSection(id) {
 }
 
 /**
- * Make section active when near top of viewport
+ * @description Make section active when near top of viewport
  */
 function makeActive() {
     //Iterate over the SectionIdMap for each section
@@ -127,7 +160,15 @@ function makeActive() {
 }
 
 
-// Scroll to anchor ID using scrollTO event
+/**
+ * @description Scroll to anchor ID using scrollTO event
+ * @param {string} id 
+ */
+function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({
+        behavior: 'smooth'
+    });
+}
 
 /**
  * End Main Functions
@@ -137,12 +178,23 @@ function makeActive() {
 
 // Build menu 
 
-// Scroll to section on link click
+/**
+ * @description Scroll to section on link click
+*/ 
+function addScrollOnClickListener() {
+    document.querySelector("header").addEventListener("click", (e) => {
+        e.preventDefault() 
+        const target = e.target
+        if(target.nodeName === 'LI') {
+            scrollTo(getSectionIdFromLinkId(target.id))
+        }
+    })
+}
 
 // Set sections as active
 
 function addScrollListener() {
-    document.addEventListener('scroll', () => {
+    document.addEventListener("scroll", () => {
         makeActive()
     })
 }
@@ -150,8 +202,8 @@ function addScrollListener() {
 
 function start() {
     buildNav()
-    setActiveSection('section3')
     addScrollListener()
+    addScrollOnClickListener()
 }
 
 start()
