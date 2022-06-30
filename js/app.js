@@ -229,7 +229,7 @@ function addScrollListener() {
  * @description Hide header if not scrolling
  */
 function hideHeaderIfNotScrolling() {
-    setTimeout(hideNavBar, 2000)
+    setTimeout(hideNavBar, 1000)
 }
 
 
