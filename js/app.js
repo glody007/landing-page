@@ -30,8 +30,9 @@ const SCROLLTOTHETOPBUTTONID = "scroll__top"
 const HIDECLASS = "hide"
 const SHOWCLASS = "show"
 const sectionIdMap = {}
-let sectionActive = null;
-let hideNavBarProcessCount = 0;
+let sectionActive = null
+let hideNavBarProcessCount = 0
+let isToggleScrollToTheTopButtonActive = false
 
 /**
  * End Global Variables
@@ -163,8 +164,26 @@ function makeActive() {
     }
 }
 
+/**
+ * @description Show or Hide the scroll to the top button
+ * 
+ */
 function toggleScrollToTheTopButton() {
-
+    const mainHero = document.querySelector(".main__hero")
+    const box = mainHero.getBoundingClientRect()
+    const button = document.getElementById(SCROLLTOTHETOPBUTTONID)
+    const isActive = box.bottom < 0
+    // change class and set state only if state changes
+    if(isActive !== isToggleScrollToTheTopButtonActive)
+    {
+        if(isActive) {
+            button.classList.remove(HIDECLASS)
+        }
+        else {
+            button.classList.add(HIDECLASS)
+        }
+        isToggleScrollToTheTopButtonActive = isActive
+    }
 }
 
 
@@ -216,6 +235,7 @@ function addScrollOnClickListener() {
 /**
  * @description Add scroll listener and hide header if not scrolling
  * Show nav on scroll and increment hideNavBarProcessCount
+ * toggle the scroll to the top button
  */
 function addScrollListener() {
     document.addEventListener("scroll", () => {
@@ -223,6 +243,7 @@ function addScrollListener() {
         hideNavBarProcessCount = hideNavBarProcessCount + 1
         makeActive()
         hideHeaderIfNotScrolling()
+        toggleScrollToTheTopButton()
     })
 }
 
@@ -250,8 +271,8 @@ function start() {
     buildNav()
     addScrollListener()
     addScrollOnClickListener()
-    hideHeaderIfNotScrolling()
     addScrollToTheTopListener()
+    hideHeaderIfNotScrolling()
 }
 
 start()
