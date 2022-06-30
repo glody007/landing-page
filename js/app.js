@@ -48,6 +48,10 @@ function getSections() {
     return getSectionsWithDataNav()
 }
 
+function isSectionActive(section) {
+    return section.classList.contains(SECTIONACTIVECLASS)
+}
+
 /**
  * @description Add section to Id-Section Map
  * setup active section
@@ -55,7 +59,7 @@ function getSections() {
  */
 function setupSection(section) {
     sectionIdMap[section.id] = section
-    if(section.classList.contains(SECTIONACTIVECLASS)) {
+    if(isSectionActive(section)) {
         sectionActive = section
     }
 }
@@ -67,10 +71,13 @@ function setupSection(section) {
  * @returns {HTMLElement}
  */
 function createNavLink(section) {
-    const li = document.createElement("li")
-    li.innerText = section.attributes["data-nav"].value
-    li.setAttribute("id", getLinkIdFromSectionId(section.id))
+    const li = document.createElement('li')
+    li.innerHTML = section.attributes["data-nav"].value
+    li.id = getLinkIdFromSectionId(section.id)
     li.classList.add(MENULINKCLASS)
+    if(isSectionActive(section)) {
+        li.classList.add(MENUACTIVECLASS)
+    }
     return li
 }
 
