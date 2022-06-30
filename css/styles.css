@@ -23,7 +23,7 @@ body {
 h1 {
     font-family: 'Fira Sans', sans-serif;
     font-size: 3em;
-    margin: 2em 1rem;
+    margin: 3em 1rem;
 }
 
 @media only screen and (min-width: 35em){
@@ -104,6 +104,14 @@ section {
     top: 0;
     width: 100%;
     z-index: 5;
+}
+
+.visible {
+    display: block;
+}
+
+.hide {
+    display: none;
 }
 
 /* Footer Styles */

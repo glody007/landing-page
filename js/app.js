@@ -26,8 +26,11 @@
 const MENUACTIVECLASS = "active"
 const MENULINKCLASS = "menu__linK"
 const SECTIONACTIVECLASS = "your-active-class"
+const HIDECLASS = "hide"
+const SHOWCLASS = "show"
 const sectionIdMap = {}
 let sectionActive = null;
+let hideNavBarProcessCount = 0;
 
 /**
  * End Global Variables
@@ -110,6 +113,17 @@ function setActiveLink(newId, oldId) {
     const newLinkId = getLinkIdFromSectionId(newId)
     document.getElementById(oldLinkId).classList.remove(MENUACTIVECLASS)
     document.getElementById(newLinkId).classList.add(MENUACTIVECLASS)
+}
+
+/**
+ * @description Hide nav only if all timeouts for hideNavBar complete
+ * decrement hideNavBarProcessCount
+ */
+function hideNavBar() {
+    hideNavBarProcessCount = hideNavBarProcessCount - 1
+    if(hideNavBarProcessCount <  0) {
+        document.querySelector("header").classList.add(HIDECLASS)
+    }
 }
 
 /**
@@ -198,10 +212,24 @@ function addScrollOnClickListener() {
 
 // Set sections as active
 
+/**
+ * @description Add scroll listener and hide header if not scrolling
+ * Show nav on scroll and increment hideNavBarProcessCount
+ */
 function addScrollListener() {
     document.addEventListener("scroll", () => {
+        document.querySelector("header").classList.remove(HIDECLASS)
+        hideNavBarProcessCount = hideNavBarProcessCount + 1
         makeActive()
+        hideHeaderIfNotScrolling()
     })
+}
+
+/**
+ * @description Hide header if not scrolling
+ */
+function hideHeaderIfNotScrolling() {
+    setTimeout(hideNavBar, 2000)
 }
 
 
@@ -209,6 +237,7 @@ function start() {
     buildNav()
     addScrollListener()
     addScrollOnClickListener()
+    hideHeaderIfNotScrolling()
 }
 
 start()
