@@ -26,6 +26,7 @@
 const MENUACTIVECLASS = "active"
 const MENULINKCLASS = "menu__linK"
 const SECTIONACTIVECLASS = "your-active-class"
+const SCROLLTOTHETOPBUTTONID = "scroll__top"
 const HIDECLASS = "hide"
 const SHOWCLASS = "show"
 const sectionIdMap = {}
@@ -139,7 +140,7 @@ function hideNavBar() {
  */
 function setActiveSection(id) {
     const section = sectionIdMap[id]
-    //Add class 'active' to section only if it is not already active
+    // Add class 'active' to section only if it is not already active
     if(sectionActive !== section) {
         setActiveLink(section.id, sectionActive.id)
         sectionIdMap[id].classList.toggle(SECTIONACTIVECLASS)
@@ -152,14 +153,18 @@ function setActiveSection(id) {
  * @description Make section active when near top of viewport
  */
 function makeActive() {
-    //Iterate over the SectionIdMap for each section
-    //if it is near top of viewport make it active
+    // Iterate over the SectionIdMap for each section
+    // if it is near top of viewport make it active
     for(const [key, section] of Object.entries(sectionIdMap)) {
         const box = section.getBoundingClientRect()
         if(box.top <= 200 && box.bottom >= 200) {
             setActiveSection(section.id)
         }
     }
+}
+
+function toggleScrollToTheTopButton() {
+
 }
 
 
@@ -186,7 +191,7 @@ function scrollTo(id) {
 function buildNav() {
     const listSection = getSectionsWithDataNav()
     const fragment = document.createDocumentFragment()
-    //For every sections create a new li and add it to fragment
+    // For every sections create a new li and add it to fragment
     for(let section of listSection) {
         setupSection(section)
         li = createNavLink(section)
@@ -222,6 +227,18 @@ function addScrollListener() {
 }
 
 /**
+ * @description Add scroll listener and hide header if not scrolling
+ * Show nav on scroll and increment hideNavBarProcessCount
+ */
+ function addScrollToTheTopListener() {
+    document.getElementById(SCROLLTOTHETOPBUTTONID).addEventListener("click", () => {
+        document.querySelector(".main__hero").scrollIntoView({
+            behavior: 'smooth'
+        });
+    })
+}
+
+/**
  * @description Hide header if not scrolling
  */
 function hideHeaderIfNotScrolling() {
@@ -234,6 +251,7 @@ function start() {
     addScrollListener()
     addScrollOnClickListener()
     hideHeaderIfNotScrolling()
+    addScrollToTheTopListener()
 }
 
 start()

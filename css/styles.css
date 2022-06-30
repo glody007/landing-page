@@ -114,6 +114,16 @@ section {
     display: none;
 }
 
+/* Main Styles */
+#scroll__top {
+    background: #fff;
+    padding: 8px;
+    position: fixed;
+    bottom: 10%;
+    right: 16px;
+    z-index: 5;
+}
+
 /* Footer Styles */
 .page__footer {
     background: #000;
