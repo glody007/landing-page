@@ -132,22 +132,6 @@ function hideNavBar() {
  * 
 */
 
-/**
- * @description build and setup the nav bar from sections 
- * on the page
- */
-function buildNav() {
-    const listSection = getSectionsWithDataNav()
-    const fragment = document.createDocumentFragment()
-    //for every sections create a new li and add it to fragment
-    for(let section of listSection) {
-        setupSection(section)
-        li = createNavLink(section)
-        fragment.appendChild(li)
-    }
-    document.getElementById("navbar__list").appendChild(fragment)
-}
-
 
 /**
  * @description Add class 'active' to section when near top of viewport
@@ -195,7 +179,21 @@ function scrollTo(id) {
  * 
 */
 
-// Build menu 
+/**
+ * @description build and setup the nav bar from sections 
+ * on the page
+ */
+function buildNav() {
+    const listSection = getSectionsWithDataNav()
+    const fragment = document.createDocumentFragment()
+    //For every sections create a new li and add it to fragment
+    for(let section of listSection) {
+        setupSection(section)
+        li = createNavLink(section)
+        fragment.appendChild(li)
+    }
+    document.getElementById("navbar__list").appendChild(fragment)
+}
 
 /**
  * @description Scroll to section on link click
@@ -209,8 +207,6 @@ function addScrollOnClickListener() {
         }
     })
 }
-
-// Set sections as active
 
 /**
  * @description Add scroll listener and hide header if not scrolling
